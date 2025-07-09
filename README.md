@@ -1,12 +1,46 @@
-# React + Vite
+# To Do
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This To Do App is a single page responsive app developed using React + Vite. It allows users to keep track of to do tasks as well as to add and delete tasks.
 
-Currently, two official plugins are available:
+# Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add tasks
+- Delete tasks
+- Track Tasks
 
-## Expanding the ESLint configuration
+# Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+React + Vite
+Javascript
+CSS
+
+# Installation and Running the App (React + Vite)
+
+1. Clone this repo locally https://github.com/learningcoding2022/ctd-to-do-list
+2. Run `npm install` in your bash / command line
+3. Run `npm run dev` in your bash / command line
+4. Open your local server to view the webpage
+
+# Dependences
+
+"react": "^19.1.0",
+"react-dom": "^19.1.0"
+
+# Dev Dependencies
+
+"@eslint/eslintrc": "^3",
+"@tailwindcss/postcss": "^4",
+"autoprefixer": "^10.4.21",
+"eslint": "^9",
+"eslint-config-next": "15.3.2",
+"postcss": "^8.5.4",
+"prettier": "^3.5.3",
+"tailwindcss": "^4.1.8"
+
+# What I learned
+
+I learned how to set up a React project from the beginning with file setup and installation of packages.
+
+# Author
+
+This project was developed by Molly B.
