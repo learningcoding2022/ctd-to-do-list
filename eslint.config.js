@@ -24,10 +24,10 @@ export default defineConfig([
       },
     },
     settings: { react: { version: 'detect' } },
-    plugins: [
+    plugins: {
       react, 
       reactHooks,
-    ],
+    },
     rules: {
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,
