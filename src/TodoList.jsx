@@ -1,3 +1,5 @@
+import TodoListItem from './TodoListItem';
+
 function TodoList() {
   const todos = [
     { id: 1, title: 'review resources' },
@@ -5,10 +7,13 @@ function TodoList() {
     { id: 3, title: 'code out app' },
   ];
   return (
+    //passing the child component through the parent component
+    //TodoList is the parent component
+    //TodoListItem is the child component
     <ul>
-      {todos.map((todo) => (
-        <li key={todo.id}>{todo.title}</li>
-      ))}
+      {todos.map((todo) => {
+        return <TodoListItem key={todo.id} todo={todo} />;
+      })}
     </ul>
   );
 }
