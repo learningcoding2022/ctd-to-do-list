@@ -2,8 +2,8 @@
 //acting as the parent
 import { useState } from 'react';
 import './App.css';
-import TodoList from './ToDoList';
-import TodoForm from './TodoForm';
+import TodoList from './features/TodoList/TodoList';
+import TodoForm from './features/TodoForm';
 
 function App() {
   //create new state value that will hold a new todo
