@@ -14,17 +14,28 @@ function App() {
     const newTodo = {
       title: title,
       id: Date.now(),
+      isCompleted: false,
     };
     //calling the updater funtions...saying heres the newtodo add it to the list
     //this is where the actual updating is happening
     setTodoList([...todoList, newTodo]);
   }
 
+  function completeTodo(todoId) {
+    const updatedTodos = todoList.map((todo) => {
+      if (todo.id === todoId) {
+        return { ...todo, isCompleted: true };
+      }
+      return todo;
+    });
+    setTodoList(updatedTodos);
+  }
+
   return (
     <div>
       <h1>My Todos</h1>
       <TodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} />
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} />
     </div>
   );
 }
