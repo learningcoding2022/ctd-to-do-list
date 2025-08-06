@@ -21,6 +21,16 @@ function App() {
     setTodoList([...todoList, newTodo]);
   }
 
+  function updateTodo(editedTodo) {
+    const updatedTodos = todoList.map((todo) => {
+      if (todo.id === editedTodo.id) {
+        return { ...editedTodo };
+      }
+      return todo;
+    });
+    setTodoList(updatedTodos);
+  }
+
   function completeTodo(todoId) {
     const updatedTodos = todoList.map((todo) => {
       if (todo.id === todoId) {
@@ -35,7 +45,11 @@ function App() {
     <div>
       <h1>My Todos</h1>
       <TodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} />
+      <TodoList
+        todoList={todoList}
+        onUpdateTodo={updateTodo}
+        onCompleteTodo={completeTodo}
+      />
     </div>
   );
 }

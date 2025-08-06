@@ -1,9 +1,8 @@
 //displays the list
 //acting child, but parent of the todolistitem
 import TodoListItem from './TodoListItem';
-import { useState } from 'react';
 
-function TodoList({ todoList, onCompleteTodo }) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
   const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
 
   return (
@@ -16,6 +15,7 @@ function TodoList({ todoList, onCompleteTodo }) {
                 key={todo.id}
                 todo={todo}
                 onCompleteTodo={onCompleteTodo}
+                onUpdateTodo={onUpdateTodo}
               />
             );
           })}
