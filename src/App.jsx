@@ -2,8 +2,8 @@
 //acting as the parent
 import { useState } from 'react';
 import './App.css';
-import TodoList from './ToDoList';
-import TodoForm from './TodoForm';
+import TodoList from './features/TodoList/TodoList';
+import TodoForm from './features/TodoForm';
 
 function App() {
   //create new state value that will hold a new todo
@@ -21,6 +21,16 @@ function App() {
     setTodoList([...todoList, newTodo]);
   }
 
+  function updateTodo(editedTodo) {
+    const updatedTodos = todoList.map((todo) => {
+      if (todo.id === editedTodo.id) {
+        return { ...editedTodo };
+      }
+      return todo;
+    });
+    setTodoList(updatedTodos);
+  }
+
   function completeTodo(todoId) {
     const updatedTodos = todoList.map((todo) => {
       if (todo.id === todoId) {
@@ -35,7 +45,11 @@ function App() {
     <div>
       <h1>My Todos</h1>
       <TodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} />
+      <TodoList
+        todoList={todoList}
+        onUpdateTodo={updateTodo}
+        onCompleteTodo={completeTodo}
+      />
     </div>
   );
 }
