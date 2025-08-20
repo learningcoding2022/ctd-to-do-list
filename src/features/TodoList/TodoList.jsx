@@ -2,12 +2,14 @@
 //acting child, but parent of the todolistitem
 import TodoListItem from './TodoListItem';
 
-function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
   const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
 
   return (
     <>
-      {filteredTodoList.length > 0 ? (
+      {isLoading ? (
+        <p>Todo list loading...</p>
+      ) : filteredTodoList.length > 0 ? (
         <ul>
           {filteredTodoList.map((todo) => {
             return (
