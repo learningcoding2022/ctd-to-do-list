@@ -93,6 +93,13 @@ function App() {
         onCompleteTodo={completeTodo}
         isLoading={isLoading}
       />
+      {errorMessage ? (
+        <div>
+          <hr />
+          <p>{errorMessage}</p>
+          <button onClick={() => setErrorMessage('')}>Dismiss</button>
+        </div>
+      ) : null}
     </div>
   );
 }
