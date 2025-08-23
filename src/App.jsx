@@ -9,8 +9,9 @@ function App() {
   //create new state value that will hold a new todo
   //this is creating a useState hook
   const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState([false]);
-  const [errorMessage, setErrorMessage] = useState(['']);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
   const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
@@ -28,7 +29,7 @@ function App() {
         const resp = await fetch(url, options);
 
         if (!resp.ok) {
-          throw new Error(`Request failed: ${resp.status}${resp.statusText}`);
+          throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
         }
 
         const { records } = await resp.json();
@@ -37,7 +38,7 @@ function App() {
           records.map((record) => {
             const todo = {
               id: record.id,
-              title: record.field?.title ?? '',
+              title: record.fields?.title ?? '',
               isCompleted: Boolean(record.fields?.isCompleted),
             };
             return todo;
@@ -52,16 +53,52 @@ function App() {
     fetchTodos();
   }, []);
 
-  function addTodo(title) {
-    const newTodo = {
-      title: title,
-      id: Date.now(),
-      isCompleted: false,
+  const addTodo = async (newTodo) => {
+    const payload = {
+      records: [
+        {
+          fields: {
+            title: newTodo.title,
+            isCompleted: newTodo.isCompleted,
+          },
+        },
+      ],
     };
-    //calling the updater funtions...saying heres the newtodo add it to the list
-    //this is where the actual updating is happening
-    setTodoList([...todoList, newTodo]);
-  }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    try {
+      setIsSaving(true);
+
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
+      }
+
+      const data = await resp.json();
+      const { records } = data;
+
+      const { id, fields } = records[0]; //grabs info from records
+      const savedTodo = { id, ...fields }; //puts this info into the new object
+
+      if (!records[0].fields.isCompleted) {
+        savedTodo.isCompleted = false;
+      }
+
+      setTodoList([...todoList, savedTodo]);
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   function updateTodo(editedTodo) {
     const updatedTodos = todoList.map((todo) => {
@@ -86,12 +123,13 @@ function App() {
   return (
     <div>
       <h1>My Todos</h1>
-      <TodoForm onAddTodo={addTodo} />
+      <TodoForm onAddTodo={addTodo} isSaving={isSaving} />
       <TodoList
         todoList={todoList}
         onUpdateTodo={updateTodo}
         onCompleteTodo={completeTodo}
         isLoading={isLoading}
+        isSaving={isSaving}
       />
       {errorMessage ? (
         <div>
