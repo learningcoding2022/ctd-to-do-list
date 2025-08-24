@@ -13,6 +13,12 @@ function App() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+  console.log('URL:', url);
+  console.log('Base ID:', import.meta.env.VITE_BASE_ID);
+  console.log('Table:', import.meta.env.VITE_TABLE_NAME);
+  console.log('Token:', import.meta.env.VITE_PAT ? 'Loaded' : 'Missing');
+  console.log('URL:', url);
+
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
   useEffect(() => {
@@ -51,7 +57,7 @@ function App() {
       }
     };
     fetchTodos();
-  }, []);
+  }, [url, token]);
 
   const addTodo = async (newTodo) => {
     const payload = {
@@ -83,16 +89,18 @@ function App() {
       }
 
       const data = await resp.json();
+      console.log('Airtable response:', data);
       const { records } = data;
 
       const { id, fields } = records[0]; //grabs info from records
       const savedTodo = { id, ...fields }; //puts this info into the new object
 
-      if (!records[0].fields.isCompleted) {
+      if (!fields.isCompleted) {
         savedTodo.isCompleted = false;
       }
 
       setTodoList([...todoList, savedTodo]);
+      return savedTodo;
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
@@ -100,7 +108,50 @@ function App() {
     }
   };
 
-  function updateTodo(editedTodo) {
+  const updateTodo = async (editedTodo) => {
+    const originalTodo = todoList.find((todo) => todo.id === editedTodo.id);
+
+    const payload = {
+      records: [
+        {
+          id: editedTodo.id,
+          fields: {
+            title: editedTodo.title,
+            isCompleted: editedTodo.isCompleted,
+          },
+        },
+      ],
+    };
+
+    const options = {
+      method: 'PATCH',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    try {
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
+      }
+    } catch (error) {
+      setErrorMessage(`${error.message}. Reverting todo...`);
+
+      const revertedTodos = todoList.map((todo) => {
+        if (todo.id === originalTodo.id) {
+          return originalTodo;
+        } else {
+          return todo;
+        }
+      });
+      setTodoList(revertedTodos);
+    } finally {
+      setIsSaving(false);
+    }
+
     const updatedTodos = todoList.map((todo) => {
       if (todo.id === editedTodo.id) {
         return { ...editedTodo };
@@ -108,7 +159,7 @@ function App() {
       return todo;
     });
     setTodoList(updatedTodos);
-  }
+  };
 
   function completeTodo(todoId) {
     const updatedTodos = todoList.map((todo) => {

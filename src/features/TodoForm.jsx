@@ -10,8 +10,10 @@ function TodoForm({ onAddTodo, isSaving }) {
   function handleAddTodo(event) {
     event.preventDefault(); //prevents form from submitting and refreshing the page
     //console.log(title); //to make sure it is working
-
-    onAddTodo(workingTodoTitle);
+    onAddTodo({
+      title: workingTodoTitle,
+      isCompleted: false,
+    });
     setWorkingTodoTitle('');
     //clears the input
     todoTitleInput.current.focus(); //this makes the mouse go back to the box after an item is added
