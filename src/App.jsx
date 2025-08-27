@@ -6,26 +6,21 @@ import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
 
 function App() {
-  //create new state value that will hold a new todo
-  //this is creating a useState hook
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-  console.log('URL:', url);
-  console.log('Base ID:', import.meta.env.VITE_BASE_ID);
-  console.log('Table:', import.meta.env.VITE_TABLE_NAME);
-  console.log('Token:', import.meta.env.VITE_PAT ? 'Loaded' : 'Missing');
-  console.log('URL:', url);
 
+  //airtable setup
+  const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
   const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
-      setErrorMessage('');
+      setErrorMessage(''); //clears old error messages
 
+      //settings for the request to airtable
       const options = {
         method: 'GET',
         headers: { Authorization: token },
@@ -33,7 +28,6 @@ function App() {
 
       try {
         const resp = await fetch(url, options);
-
         if (!resp.ok) {
           throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
         }
@@ -60,6 +54,7 @@ function App() {
   }, [url, token]);
 
   const addTodo = async (newTodo) => {
+    //payload is new data being sent
     const payload = {
       records: [
         {
@@ -70,7 +65,7 @@ function App() {
         },
       ],
     };
-
+    //settings for request to airtable
     const options = {
       method: 'POST',
       headers: {
@@ -89,11 +84,10 @@ function App() {
       }
 
       const data = await resp.json();
-      console.log('Airtable response:', data);
       const { records } = data;
 
-      const { id, fields } = records[0]; //grabs info from records
-      const savedTodo = { id, ...fields }; //puts this info into the new object
+      const { id, fields } = records[0];
+      const savedTodo = { id, ...fields };
 
       if (!fields.isCompleted) {
         savedTodo.isCompleted = false;
@@ -161,14 +155,55 @@ function App() {
     setTodoList(updatedTodos);
   };
 
-  function completeTodo(todoId) {
+  async function completeTodo(todoId) {
+    const originalTodo = todoList.find((todo) => todo.id === todoId);
+
     const updatedTodos = todoList.map((todo) => {
       if (todo.id === todoId) {
         return { ...todo, isCompleted: true };
+      } else {
+        return todo;
       }
-      return todo;
     });
     setTodoList(updatedTodos);
+
+    const payload = {
+      records: [
+        {
+          id: todoId,
+          fields: { title: originalTodo.title, isCompleted: true },
+        },
+      ],
+    };
+
+    const options = {
+      method: 'PATCH',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    try {
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
+      }
+    } catch (error) {
+      setErrorMessage(`${error.message}. Reverting todo...`);
+
+      const revertedTodos = todoList.map((todo) => {
+        if (todo.id === originalTodo.id) {
+          return originalTodo;
+        } else {
+          return todo;
+        }
+      });
+      setTodoList(revertedTodos);
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -192,5 +227,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
