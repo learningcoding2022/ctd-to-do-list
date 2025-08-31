@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TextInputWithLabel from '../../shared/TextInputWithLabel';
 
 //acting as child of todolist
@@ -6,6 +6,10 @@ const TodoListItem = ({ todo, onCompleteTodo, onUpdateTodo }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [workingTitle, setWorkingTitle] = useState(todo.title);
+
+  useEffect(() => {
+    setWorkingTitle(todo.title);
+  }, [todo]);
 
   function handleEdit(event) {
     setWorkingTitle(event.target.value);
@@ -32,9 +36,7 @@ const TodoListItem = ({ todo, onCompleteTodo, onUpdateTodo }) => {
             <button type="button" onClick={handleCancel}>
               Cancel
             </button>
-            <button type="button" onClick={handleUpdate}>
-              Update
-            </button>
+            <button type="submit">Update</button>
           </>
         ) : (
           <>
