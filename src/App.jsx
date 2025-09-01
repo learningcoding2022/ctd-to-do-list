@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
+import TodosViewForm from './features/TodosViewForm';
 
 //airtable setup
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -34,10 +35,7 @@ function App() {
       };
 
       try {
-        const resp = await fetch(
-          encodeUrl({ sortField, sortDirection }),
-          options
-        );
+        const resp = await fetch(url, options);
         if (!resp.ok) {
           throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
         }
@@ -235,6 +233,13 @@ function App() {
         onCompleteTodo={completeTodo}
         isLoading={isLoading}
         isSaving={isSaving}
+      />
+      <hr />
+      <TodosViewForm
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
       />
       {errorMessage ? (
         <div>
