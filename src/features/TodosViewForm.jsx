@@ -1,11 +1,10 @@
-import { useRef } from 'react';
-import { useState } from 'react';
-
 function TodosViewForm({
   sortField,
   setSortField,
   sortDirection,
   setSortDirection,
+  queryString,
+  setQueryString,
 }) {
   function preventRefresh(e) {
     e.preventDefault();
@@ -14,6 +13,19 @@ function TodosViewForm({
   return (
     <form onSubmit={preventRefresh}>
       <div>
+        <div>
+          <label htmlFor="query">Search todos:</label>
+          <input
+            id="query"
+            type="text"
+            value={queryString}
+            onChange={(e) => setQueryString(e.target.value)}
+          />
+          <button type="button" onClick={() => setQueryString('')}>
+            Clear
+          </button>
+        </div>
+
         <label htmlFor="sortField">Sort by</label>
         <select
           id="sortField"
