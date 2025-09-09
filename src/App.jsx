@@ -1,19 +1,32 @@
 //app.jsx coordinates everything
 //acting as the parent
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import TodoList from './features/TodoList/TodoList';
 import TodoForm from './features/TodoForm';
+import TodosViewForm from './features/TodosViewForm';
+
+//airtable setup
+const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
+const token = `Bearer ${import.meta.env.VITE_PAT}`;
 
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [sortField, setSortField] = useState('createdTime');
+  const [sortDirection, setSortDirection] = useState('desc');
+  const [queryString, setQueryString] = useState('');
 
-  //airtable setup
-  const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
-  const token = `Bearer ${import.meta.env.VITE_PAT}`;
+  const encodeUrl = useCallback(() => {
+    let sortQuery = `sort[0][field]=${sortField}&sort[0][direction]=${sortDirection}`;
+    let searchQuery = '';
+    if (queryString) {
+      searchQuery = `&filterByFormula=SEARCH("${queryString}",+title)`;
+    }
+    return encodeURI(`${url}?${sortQuery}${searchQuery}`);
+  }, [sortField, sortDirection, queryString]);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -27,7 +40,7 @@ function App() {
       };
 
       try {
-        const resp = await fetch(url, options);
+        const resp = await fetch(encodeUrl(), options);
         if (!resp.ok) {
           throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
         }
@@ -51,7 +64,7 @@ function App() {
       }
     };
     fetchTodos();
-  }, [url, token]);
+  }, [sortField, sortDirection, queryString, encodeUrl]);
 
   const addTodo = async (newTodo) => {
     //payload is new data being sent
@@ -78,7 +91,7 @@ function App() {
     try {
       setIsSaving(true);
 
-      const resp = await fetch(url, options);
+      const resp = await fetch(encodeUrl(), options);
       if (!resp.ok) {
         throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
       }
@@ -127,7 +140,7 @@ function App() {
     };
 
     try {
-      const resp = await fetch(url, options);
+      const resp = await fetch(encodeUrl(), options);
       if (!resp.ok) {
         throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
       }
@@ -186,7 +199,7 @@ function App() {
     };
 
     try {
-      const resp = await fetch(url, options);
+      const resp = await fetch(encodeUrl(), options);
       if (!resp.ok) {
         throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
       }
@@ -216,6 +229,15 @@ function App() {
         onCompleteTodo={completeTodo}
         isLoading={isLoading}
         isSaving={isSaving}
+      />
+      <hr />
+      <TodosViewForm
+        sortField={sortField}
+        setSortField={setSortField}
+        sortDirection={sortDirection}
+        setSortDirection={setSortDirection}
+        queryString={queryString}
+        setQueryString={setQueryString}
       />
       {errorMessage ? (
         <div>
