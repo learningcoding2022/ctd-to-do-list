@@ -5,3 +5,9 @@
   align-items: center;
   width: 100%;
 }
+
+.error {
+  border: 2px solid #05445e;
+  padding: 1rem;
+  background-color: pink;
+}

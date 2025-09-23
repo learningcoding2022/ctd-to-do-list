@@ -243,7 +243,7 @@ function App() {
       {errorMessage ? (
         <div>
           <hr />
-          <p>{errorMessage}</p>
+          <p className={styles.error}>{errorMessage}</p>
           <button onClick={() => setErrorMessage('')}>Dismiss</button>
         </div>
       ) : null}
