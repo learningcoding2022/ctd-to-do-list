@@ -11,6 +11,13 @@ const StyledButton = styled.button`
   }
 `;
 
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+`;
+
 function TodoForm({ onAddTodo, isSaving }) {
   const [workingTodoTitle, setWorkingTodoTitle] = useState('');
 
@@ -31,7 +38,7 @@ function TodoForm({ onAddTodo, isSaving }) {
   const isButtonDisabled = isSaving || workingTodoTitle.trim() === '';
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <StyledForm onSubmit={handleAddTodo}>
       <TextInputWithLabel
         elementId="todoTitle"
         labelText="Todo"
@@ -42,7 +49,7 @@ function TodoForm({ onAddTodo, isSaving }) {
       <StyledButton disabled={isButtonDisabled}>
         {isSaving ? 'Saving...' : 'Add Todo'}
       </StyledButton>
-    </form>
+    </StyledForm>
   );
 }
 
