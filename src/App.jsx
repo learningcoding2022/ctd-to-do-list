@@ -241,9 +241,9 @@ function App() {
         setQueryString={setQueryString}
       />
       {errorMessage ? (
-        <div>
+        <div className={styles.error}>
           <hr />
-          <p className={styles.error}>{errorMessage}</p>
+          <p>{errorMessage}</p>
           <button onClick={() => setErrorMessage('')}>Dismiss</button>
         </div>
       ) : null}

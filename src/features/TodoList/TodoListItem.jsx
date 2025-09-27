@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import TextInputWithLabel from '../../shared/TextInputWithLabel';
+import styles from './TodoListItem.module.css';
 
 //acting as child of todolist
 const TodoListItem = ({ todo, onCompleteTodo, onUpdateTodo }) => {
