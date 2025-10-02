@@ -39,8 +39,8 @@ function reducer(state = initialState, action) {
         todoList: action.records.map(function(record) {
             return {
                 id: record.id,
-                title: record.fields.Title,
-                completed: record.fields.Completed,
+                title: record.fields.title,
+                completed: record.fields.isCompleted,
             };
         }),
         isLoading: false,

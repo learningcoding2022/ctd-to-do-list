@@ -43,6 +43,7 @@ function App() {
 
       try {
         const resp = await fetch(encodeUrl(), options);
+        console.log(resp);
         if (!resp.ok) {
           throw new Error(`Request failed: ${resp.status} ${resp.statusText}`);
         }
@@ -66,7 +67,7 @@ function App() {
         {
           fields: {
             title: newTodo.title,
-            isCompleted: newTodo.isCompleted ?? false,
+            Completed: newTodo.isCompleted ?? false,
           },
         },
       ],
