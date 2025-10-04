@@ -2,15 +2,13 @@
 //acting as the parent
 import { useState, useEffect, useCallback, useReducer } from 'react';
 import './App.css';
-import TodoList from './features/TodoList/TodoList';
-import TodoForm from './features/TodoForm';
-import TodosViewForm from './features/TodosViewForm';
 import styles from './App.module.css';
 import {
   reducer as todosReducer,
   actions as todoActions,
   initialState as initialTodosState,
 } from './todos.reducer';
+import TodosPage from './pages/TodosPage';
 
 //airtable setup
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -179,32 +177,20 @@ function App() {
   return (
     <div className={styles.app}>
       <h1>My Todos</h1>
-      <TodoForm onAddTodo={addTodo} isSaving={todoState.isSaving} />
-      <TodoList
-        todoList={todoState.todoList}
-        onUpdateTodo={updateTodo}
-        onCompleteTodo={completeTodo}
-        isLoading={todoState.isLoading}
-        isSaving={todoState.isSaving}
-      />
-      <hr />
-      <TodosViewForm
+      <TodosPage
+        addTodo={addTodo}
+        todoState={todoState}
+        updateTodo={updateTodo}
+        completeTodo={completeTodo}
         sortField={sortField}
         setSortField={setSortField}
         sortDirection={sortDirection}
         setSortDirection={setSortDirection}
         queryString={queryString}
         setQueryString={setQueryString}
+        dispatch={dispatch}
+        todoActions={todoActions}
       />
-      {todoState.errorMessage && (
-        <div className={styles.error}>
-          <hr />
-          <p>{todoState.errorMessage}</p>
-          <button onClick={() => dispatch({ type: todoActions.clearError })}>
-            Dismiss
-          </button>
-        </div>
-      )}
     </div>
   );
 }
