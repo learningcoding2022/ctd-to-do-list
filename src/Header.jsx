@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  NavLink,
-  useLocation,
-} from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styles from './Header.module.css';
 import { useState, useEffect } from 'react';
 

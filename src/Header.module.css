@@ -1,5 +1,9 @@
 .header {
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .title {
@@ -15,8 +19,14 @@
 }
 
 .nav {
-  position: absolute;
   display: flex;
-  top: 0.5rem;
-  right: 0.5rem;
+  flex-direction: column;
+  justify-content: right;
+  gap: 1rem;
+}
+
+.nav a {
+  color: #05445e;
+  font-weight: bold;
+  text-decoration: none;
 }
