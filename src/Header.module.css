@@ -1,0 +1,22 @@
+.header {
+  position: relative;
+}
+
+.title {
+  text-align: center;
+}
+
+.active {
+  color: gray;
+}
+
+.inactive {
+  color: black;
+}
+
+.nav {
+  position: absolute;
+  display: flex;
+  top: 0.5rem;
+  right: 0.5rem;
+}

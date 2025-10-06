@@ -1,7 +1,7 @@
-import TodoForm from '../features/TodoForm';
-import TodoList from '../features/TodoList';
-import TodosViewForm from '../features/TodosViewForm';
-import styles from '../App.module.css';
+import TodoForm from './features/TodoForm';
+import TodoList from './features/TodoList/TodoList';
+import TodosViewForm from './features/TodosViewForm';
+import styles from './App.module.css';
 
 function TodosPage({
   addTodo,

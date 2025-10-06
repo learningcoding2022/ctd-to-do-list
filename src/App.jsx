@@ -1,5 +1,6 @@
 //app.jsx coordinates everything
 //acting as the parent
+import { BrowserRouter } from 'react-router-dom';
 import { useState, useEffect, useCallback, useReducer } from 'react';
 import './App.css';
 import styles from './App.module.css';
@@ -8,7 +9,8 @@ import {
   actions as todoActions,
   initialState as initialTodosState,
 } from './todos.reducer';
-import TodosPage from './pages/TodosPage';
+import TodosPage from './TodosPage';
+import Header from './Header.jsx';
 
 //airtable setup
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -176,7 +178,7 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <h1>My Todos</h1>
+      <Header />
       <TodosPage
         addTodo={addTodo}
         todoState={todoState}
