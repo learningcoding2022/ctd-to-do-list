@@ -35,6 +35,13 @@ function TodosPage({
         isLoading={todoState.isLoading}
         isSaving={todoState.isSaving}
       />
+      <div className={styles.pagination}>
+        <button>Previous</button>
+        <span>
+          {currentPage} of {totalPages}
+        </span>
+        <button>Next</button>
+      </div>
       <hr />
       <TodosViewForm
         sortField={sortField}

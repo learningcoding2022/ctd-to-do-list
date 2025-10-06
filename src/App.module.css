@@ -14,3 +14,9 @@
   background-color: pink;
   border-radius: 0.5rem;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
