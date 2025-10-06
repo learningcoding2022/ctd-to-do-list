@@ -1,6 +1,6 @@
 //app.jsx coordinates everything
 //acting as the parent
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useState, useEffect, useCallback, useReducer } from 'react';
 import './App.css';
 import styles from './App.module.css';
@@ -177,29 +177,32 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <div className={styles.app}>
-        <Header />
-        <Routes>
-          <TodosPage
-            addTodo={addTodo}
-            todoState={todoState}
-            updateTodo={updateTodo}
-            completeTodo={completeTodo}
-            sortField={sortField}
-            setSortField={setSortField}
-            sortDirection={sortDirection}
-            setSortDirection={setSortDirection}
-            queryString={queryString}
-            setQueryString={setQueryString}
-            dispatch={dispatch}
-            todoActions={todoActions}
-          />
-          <Route path="/about" element={<h1>About</h1>} />
-          <Route path="*" element={<h1>Not Found</h1>} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <div className={styles.app}>
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <TodosPage
+              addTodo={addTodo}
+              todoState={todoState}
+              updateTodo={updateTodo}
+              completeTodo={completeTodo}
+              sortField={sortField}
+              setSortField={setSortField}
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
+              queryString={queryString}
+              setQueryString={setQueryString}
+              dispatch={dispatch}
+              todoActions={todoActions}
+            />
+          }
+        />
+        <Route path="/about" element={<h1>About</h1>} />
+        <Route path="*" element={<h1>Not Found</h1>} />
+      </Routes>
+    </div>
   );
 }
 export default App;
