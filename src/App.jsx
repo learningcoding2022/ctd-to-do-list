@@ -11,6 +11,8 @@ import {
 } from './todos.reducer';
 import TodosPage from './TodosPage';
 import Header from './Header.jsx';
+import About from './About.jsx';
+import { useSearchParams } from 'react-router-dom';
 
 //airtable setup
 const url = `https://api.airtable.com/v0/${import.meta.env.VITE_BASE_ID}/${import.meta.env.VITE_TABLE_NAME}`;
@@ -199,7 +201,7 @@ function App() {
             />
           }
         />
-        <Route path="/about" element={<h1>About</h1>} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </div>
