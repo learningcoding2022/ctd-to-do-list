@@ -24,6 +24,20 @@ function TodosPage({
   const indexOfFirstTodo = (currentPage - 1) * itemsPerPage;
   const totalPages = Math.ceil(todoState.todoList.length / itemsPerPage);
 
+  const handlePreviousPage = () => {
+    //only page backwards if it is not the first page
+    if (currentPage > 1) {
+      setSearchParams({ page: currentPage - 1 });
+    }
+  };
+
+  const handleNextPage = () => {
+    //only page forward if it is not the last page
+    if (currentPage < totalPages) {
+      setSearchParams({ page: currentPage + 1 });
+    }
+  };
+
   return (
     <>
       <h1>My Todos</h1>
@@ -36,11 +50,11 @@ function TodosPage({
         isSaving={todoState.isSaving}
       />
       <div className={styles.pagination}>
-        <button>Previous</button>
+        <button onClick={handlePreviousPage}>Previous</button>
         <span>
           {currentPage} of {totalPages}
         </span>
-        <button>Next</button>
+        <button onClick={handleNextPage}>Next</button>
       </div>
       <hr />
       <TodosViewForm
