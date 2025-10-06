@@ -1,6 +1,6 @@
 //app.jsx coordinates everything
 //acting as the parent
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useEffect, useCallback, useReducer } from 'react';
 import './App.css';
 import styles from './App.module.css';
@@ -177,23 +177,29 @@ function App() {
   };
 
   return (
-    <div className={styles.app}>
-      <Header />
-      <TodosPage
-        addTodo={addTodo}
-        todoState={todoState}
-        updateTodo={updateTodo}
-        completeTodo={completeTodo}
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        queryString={queryString}
-        setQueryString={setQueryString}
-        dispatch={dispatch}
-        todoActions={todoActions}
-      />
-    </div>
+    <BrowserRouter>
+      <div className={styles.app}>
+        <Header />
+        <Routes>
+          <TodosPage
+            addTodo={addTodo}
+            todoState={todoState}
+            updateTodo={updateTodo}
+            completeTodo={completeTodo}
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+            queryString={queryString}
+            setQueryString={setQueryString}
+            dispatch={dispatch}
+            todoActions={todoActions}
+          />
+          <Route path="/about" element={<h1>About</h1>} />
+          <Route path="*" element={<h1>Not Found</h1>} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 export default App;
