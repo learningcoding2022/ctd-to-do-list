@@ -1,6 +1,7 @@
 //displays the list
 //acting child, but parent of the todolistitem
 import TodoListItem from './TodoListItem';
+import styles from './TodoList.module.css';
 
 function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
   const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
@@ -10,7 +11,7 @@ function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isLoading }) {
       {isLoading ? (
         <p>Todo list loading...</p>
       ) : filteredTodoList.length > 0 ? (
-        <ul>
+        <ul className={styles.list}>
           {filteredTodoList.map((todo) => {
             return (
               <TodoListItem
